@@ -39,8 +39,7 @@ button {
 }
 
 .data img {
-    
-    background: #FFFFFF;
+    background: #18232B;
     border-radius: 50%;
     padding: 10px;
     margin-top: -60px;
@@ -77,5 +76,8 @@ button {
     }
     .header-div {
         margin: 20px 90px 20px 90px;
+    }
+    section {
+        text-align: center;
     }
 }

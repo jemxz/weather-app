@@ -4,12 +4,14 @@ import axios from 'axios';
 
 function App() {
   const [search, setsearch] = useState('')
-  const [city, setCity] = useState()
-  const [country, setCountry] = useState()
-  const [humidity, setHumidity] = useState()
-  const [temperature, setTemperature] = useState()
-  const [wind, setWind] = useState()
-  const [weatherIcons, setWeatherIcons] = useState()
+  const [allData, setAllData] = useState({
+            city: '',
+            country: '',
+            humidity: '',
+            temperature: '',
+            minTemp: '',
+            weatherIcons: ''
+  })
 
     useEffect(() => {
       fetchData()
@@ -18,18 +20,20 @@ function App() {
     const fetchData = async(city) => {
         try {
           const apiKey = process.env.REACT_APP_WEATHER_API_KEY
-          const res = await axios.get(`http://api.weatherstack.com/current?access_key=${apiKey}&query=${city}`)
-          await setCity(res.data.location.name)
-          await setCountry(res.data.location.country)
-          await setHumidity(res.data.current.humidity)
-          await setTemperature(res.data.current.temperature)
-          await setWind(res.data.current.wind_speed)
-          await setWeatherIcons(res.data.current.weather_icons)
-          console.log(res.data)
+          const res = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}=metric`)
+          await setAllData({
+            city: res.data.name,
+            country: res.data.sys.country,
+            humidity: res.data.main.humidity,
+            temperature: res.data.main.temp,
+            minTemp: res.data.main.temp_min,
+            weatherIcons: res.data.weather[0].icon
+          })
         }
         catch {}
     }
   
+
   const handleSubmit = (event) => {
     console.log(search)
     fetchData(search)
@@ -58,33 +62,33 @@ function App() {
           <div className="header-div">
             <div>
               <div className="data">
-                <img src={weatherIcons} alt="" height='100px' width='100px'/>
+                <img src={'https://openweathermap.org/img/wn/' + allData.weatherIcons + '@2x.png'} height="100px" width="100px"/>
                 <h1 className="title">
-                  {city}
+                  {allData.city}
                 </h1>
                 <h2 className="location">
-                  {country}
+                  {allData.country}
                 </h2>
 
                 <div className="weather-description">
                   <div className="first-child">
                     <h3>HUMIDITY</h3>
                     <p>
-                      {humidity}%
+                    {allData.humidity}%
                     </p>
                   </div>
 
                   <div>
                     <h3>TEMPERATURE</h3>
                     <p>
-                      {temperature}°C
+                      {allData.temperature}°C
                     </p>
                   </div>
 
                   <div className="last-child">
-                    <h3>WIND</h3>
+                    <h3>MIN TEMPERATURE</h3>
                     <p>
-                      {wind} kmh
+                      {allData.minTemp}°C
                     </p>
                   </div>
                 </div>
