@@ -47,7 +47,7 @@ function App() {
   };
 
   const handleIcons = () => {
-    if(allData.weatherIcons == "") return  <img alt = "" src="https://img.icons8.com/nolan/96/cloud.png"/> 
+    if(allData.weatherIcons === "") return  <img alt = "" src="https://img.icons8.com/nolan/96/cloud.png"/> 
     return <img alt = "" src={'https://openweathermap.org/img/wn/' + allData.weatherIcons + '@2x.png'} height="100px" width="100px"/>
   }
 
