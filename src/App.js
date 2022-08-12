@@ -2,6 +2,8 @@ import './App.css';
 import { useState, useEffect } from 'react'
 import axios from 'axios';
 
+
+
 function App() {
   const [search, setsearch] = useState('')
   const [allData, setAllData] = useState({
@@ -20,7 +22,7 @@ function App() {
     const fetchData = async(city) => {
         try {
           const apiKey = process.env.REACT_APP_WEATHER_API_KEY
-          const res = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}=metric`)
+          const res = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`)
           await setAllData({
             city: res.data.name,
             country: res.data.sys.country,
@@ -44,10 +46,16 @@ function App() {
     setsearch(event.target.value);
   };
 
+  const handleIcons = () => {
+    if(allData.weatherIcons == "") return  <img alt = "" src="https://img.icons8.com/nolan/96/cloud.png"/> 
+    return <img alt = "" src={'https://openweathermap.org/img/wn/' + allData.weatherIcons + '@2x.png'} height="100px" width="100px"/>
+  }
+
+
   return (
     <main>
       <div>
-        <form onSubmit={handleSubmit}>
+        <form >
           <input
             type="text" 
             name="city" 
@@ -55,14 +63,14 @@ function App() {
             value={search}
             onChange={handleChange}
             />
-          <button for="city">Search</button>
         </form>
+          <button className='searchButton' onClick={handleSubmit}for="city">Search</button>
 
         <section>
           <div className="header-div">
             <div>
               <div className="data">
-                <img src={'https://openweathermap.org/img/wn/' + allData.weatherIcons + '@2x.png'} height="100px" width="100px"/>
+                {handleIcons}
                 <h1 className="title">
                   {allData.city}
                 </h1>
